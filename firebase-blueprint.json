@@ -1,0 +1,55 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Information about the user",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string" },
+        "name": { "type": "string" },
+        "role": { "type": "string", "enum": ["employee", "hr"] }
+      },
+      "required": ["uid", "email", "name", "role"]
+    },
+    "Session": {
+      "title": "Chat Session",
+      "description": "Metadata for a conversation session",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "summary": { "type": "string" },
+        "riskLevel": { "type": "number" },
+        "primaryEmotion": { "type": "string" },
+        "topicTags": { "type": "array", "items": { "type": "string" } }
+      },
+      "required": ["userId", "createdAt"]
+    },
+    "Message": {
+      "title": "Message",
+      "description": "A single message in a session",
+      "type": "object",
+      "properties": {
+        "role": { "type": "string", "enum": ["user", "model"] },
+        "content": { "type": "string" },
+        "timestamp": { "type": "string", "format": "date-time" }
+      },
+      "required": ["role", "content", "timestamp"]
+    }
+  },
+  "firestore": {
+    "users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "sessions/{sessionId}": {
+      "schema": "Session",
+      "description": "Conversation sessions"
+    },
+    "sessions/{sessionId}/messages/{messageId}": {
+      "schema": "Message",
+      "description": "Messages within a session"
+    }
+  }
+}
