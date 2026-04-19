@@ -64,17 +64,16 @@ export async function getGeminiResponse(messages: Message[]) {
 
   const ai = new GoogleGenAI({ apiKey: currentApiKey });
   
-  // Format history for Gemini
   const contents = messages.map(msg => ({
     role: msg.role === 'assistant' ? 'model' : 'user',
     parts: [{ text: msg.content }]
   }));
 
   const response = await ai.models.generateContent({
-    model: "gemini-3-flash-preview",
+    model: "gemini-3.1-flash-lite-preview",
     contents,
     config: {
-      systemInstruction: SYSTEM_PROMPT,
+      systemInstruction: SYSTEM_PROMPT, // This uses the warm N'Rub Job personality defined above
       temperature: 0.7,
       topP: 0.95,
       topK: 64,
@@ -83,3 +82,5 @@ export async function getGeminiResponse(messages: Message[]) {
 
   return response.text;
 }
+
+// ... the rest of the file (SYSTEM_PROMPT) remains the same ...
